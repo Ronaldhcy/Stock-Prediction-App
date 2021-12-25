@@ -31,44 +31,48 @@ period = n_years * 365
 
 uncertainty_interval = st.slider("Uncertainty interval", min_value = 0.0, max_value = 1.0, value = 0.8)
 
-@st.cache
-def load_data(ticker):
-    data = yf.download(ticker, START, TODAY)
-    data.reset_index(inplace=True)
-    return data
+enter_button = st.button('Generate forecast!')
 
-data_load_state = st.text("Load data...")
-data = load_data(selected_asset)
-data_load_state.text("Loading data...done!")
+if enter_button:
 
-st.subheader('Raw data')
-st.write(data.tail())
+    @st.cache
+    def load_data(ticker):
+        data = yf.download(ticker, START, TODAY)
+        data.reset_index(inplace=True)
+        return data
 
-def plot_raw_data():
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data['Date'], y=data['Open'], name='stock_open'))
-    fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], name='stock_close'))
-    fig.layout.update(title_text='Time Series Data', xaxis_rangeslider_visible=True)
-    st.plotly_chart(fig)
+    data_load_state = st.text("Load data...")
+    data = load_data(selected_asset)
+    data_load_state.text("Loading data...done!")
 
-plot_raw_data()
+    st.subheader('Raw data')
+    st.write(data.tail())
 
-# Forecasting:
-df_train = data[['Date', 'Close']]
-df_train = df_train.rename(columns={'Date': 'ds', "Close": 'y'})
+    def plot_raw_data():
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=data['Date'], y=data['Open'], name='stock_open'))
+        fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], name='stock_close'))
+        fig.layout.update(title_text='Time Series Data', xaxis_rangeslider_visible=True)
+        st.plotly_chart(fig)
 
-m = Prophet(interval_width=uncertainty_interval)
-m.fit(df_train)
-future = m.make_future_dataframe(periods = period)
-forecast = m.predict(future)
+    plot_raw_data()
 
-st.subheader('Forecast data')
-st.write(forecast.tail())
+    # Forecasting:
+    df_train = data[['Date', 'Close']]
+    df_train = df_train.rename(columns={'Date': 'ds', "Close": 'y'})
 
-st.write('forecast data')
-fig1 = plot_plotly(m, forecast)
-st.plotly_chart(fig1)
+    m = Prophet(interval_width=uncertainty_interval)
+    m.fit(df_train)
+    future = m.make_future_dataframe(periods = period)
+    forecast = m.predict(future)
 
-st.write('forecast components')
-fig2 = m.plot_components(forecast)
-st.write(fig2)
+    st.subheader('Forecast data')
+    st.write(forecast.tail())
+
+    st.write('forecast data')
+    fig1 = plot_plotly(m, forecast)
+    st.plotly_chart(fig1)
+
+    st.write('forecast components')
+    fig2 = m.plot_components(forecast)
+    st.write(fig2)
