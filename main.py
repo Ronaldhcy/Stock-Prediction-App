@@ -11,23 +11,36 @@ TODAY = date.today().strftime('%Y-%m-%d')
 
 st.title("Stock Prediction App")
 
-asset_type = ('Stock', 'Forex', 'Index')
+asset_type = ('Stock', 'Forex', 'Index', 'Crypocurrency')
 
 stocks = ('AAPL', "GOOG", "MSFT", "GME")
-forex = ('USDJPY=X', 'EURUSD=X', 'GBP/USD=X')
-index = ('DJI', '^IXIC', '^GSPC', '^HSI')
+forex = ('USDJPY=X', 'EURUSD=X', 'GBPUSD=X')
+index = ('^DJI', '^IXIC', '^GSPC', '^HSI')
+crypo_curr = ('BTC-USD', 'ETH-USD', 'BNB-USD')
+period = ('Weekly', 'Monthly', 'Yearly')
 
 selected_asset_type = st.selectbox('Select type of asset to be predicted: ', asset_type)
 
 if selected_asset_type == 'Stock':
     selected_asset = st.selectbox("Select stock for prediction", stocks)
 elif selected_asset_type == 'Forex':
-    selected_asset = st.selectbox("Select stock for prediction", forex)
+    selected_asset = st.selectbox("Select forex for prediction", forex)
 elif selected_asset_type == 'Index':
-    selected_asset = st.selectbox("Select stock for prediction", index)
+    selected_asset = st.selectbox("Select index for prediction", index)
+elif selected_asset_type == 'Crypocurrency':
+    selected_asset = st.selectbox("Select crypo for prediction", crypo_curr)   
 
-n_years = st.slider("Years of prediction:", 1, 4)
-period = n_years * 365
+period_of_prediction = st.selectbox("Select period of prediction", period) 
+
+if period_of_prediction == 'Weekly':
+    n_periods = st.slider("Duration of prediction:", 1, 7)
+    period = n_periods
+elif period_of_prediction == 'Monthly':
+    n_periods = st.slider("Duration of prediction:", 7, 365)
+    period = n_periods
+elif period_of_prediction == 'Yearly':
+    n_periods = st.slider("Duration of prediction:", 1, 10)
+    period = n_periods * 365
 
 uncertainty_interval = st.slider("Uncertainty interval", min_value = 0.0, max_value = 1.0, value = 0.8)
 
