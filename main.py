@@ -19,7 +19,7 @@ asset_type = ('Stock', 'Forex', 'Index', 'Crypocurrency')
 
 stocks = ('AAPL', "GOOG", "MSFT", "GME", '0700.HK', '0005.HK')
 forex = ('USDJPY=X', 'EURUSD=X', 'GBPUSD=X')
-index = ('^DJI', '^IXIC', '^GSPC', '^HSI')
+index = ('^DJI', '^IXIC', '^GSPC', '^HSI', '^N225', )
 crypo_curr = ('BTC-USD', 'ETH-USD', 'BNB-USD')
 period = ('Weekly', 'Monthly', 'Yearly')
 
