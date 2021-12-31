@@ -15,12 +15,14 @@ st.title("Stock Prediction App")
 
 container = st.container()
 
-asset_type = ('Stock', 'Forex', 'Index', 'Crypocurrency')
+asset_type = ('Stock', 'Forex', 'Index', 'Crypocurrency', 'Crude Oil', 'Gold')
 
 stocks = ('AAPL', "GOOG", "MSFT", "GME", '0700.HK', '0005.HK')
 forex = ('USDJPY=X', 'EURUSD=X', 'GBPUSD=X')
 index = ('^DJI', '^IXIC', '^GSPC', '^HSI', '^N225', )
 crypo_curr = ('BTC-USD', 'ETH-USD', 'BNB-USD')
+crude_oil = ('CL=F', )
+gold = ('GC=F', )
 period = ('Weekly', 'Monthly', 'Yearly')
 
 selected_asset_type = container.selectbox('Select type of asset to be predicted: ', asset_type)
@@ -32,7 +34,11 @@ elif selected_asset_type == 'Forex':
 elif selected_asset_type == 'Index':
     selected_asset = container.selectbox("Select index for prediction", index)
 elif selected_asset_type == 'Crypocurrency':
-    selected_asset = container.selectbox("Select crypo for prediction", crypo_curr)   
+    selected_asset = container.selectbox("Select crypo for prediction", crypo_curr)
+elif selected_asset_type == 'Crude Oil':
+    selected_asset = container.selectbox("Select oil asset type for prediction", crude_oil)   
+elif selected_asset_type == 'Gold':
+    selected_asset = container.selectbox("Select gold asset type for prediction", gold)
 
 period_of_prediction = container.selectbox("Select period of prediction", period) 
 
